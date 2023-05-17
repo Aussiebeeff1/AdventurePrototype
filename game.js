@@ -2,13 +2,27 @@ class Demo1 extends AdventureScene {
     constructor() {
         super("demo1", "First Room");
     }
-
+    preload() {
+        this.load.path = "./assets/";
+        this.load.image('room1', 'room1.png');
+        this.load.image('room2', 'room2.png');
+        this.load.image('knob', 'knob.png');
+    }
     onEnter() {
-
-        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎 paperclip")
+        this.imageObject = this.add.image(
+            0,//x
+            0,//y
+            'room1',//imagename
+            
+        ).setOrigin(0);
+        var bg = this.add.sprite(0, 0, 'room1').setOrigin(0);
+    bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+        
+        this.imageObject.setScale(1)
+        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎  paperclip")
             .setFontSize(this.s * 2)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("Metal, bent."))
+            .on('pointerover', () => this.showMessage("This leads to your"))
             .on('pointerdown', () => {
                 this.showMessage("No touching!");
                 this.tweens.add({
@@ -101,10 +115,64 @@ class Intro extends Phaser.Scene {
         this.add.text(50,100, "Click anywhere to begin.").setFontSize(20);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0,0,0);
-            this.time.delayedCall(1000, () => this.scene.start('demo1'));
+            this.time.delayedCall(1000, () => this.scene.start('int1'));
         });
     }
 }
+
+
+
+class Int1 extends Phaser.Scene {
+    constructor() {
+        super('int1')
+    }
+
+    preload() {
+        this.load.path = "./assets/";
+        this.load.spritesheet('beeff', 'beeff.png', {
+            frameWidth: 600,
+            frameHeight: 500
+        });
+        
+    }
+
+
+create() {
+      
+         this.imageObject = this.add.sprite(
+            900,
+            500,
+            'beeff',
+        );
+         this.imageObject.setScale(1.9); //resize
+        this.anims.create({
+            key: 'beeff',
+            frames: this.anims.generateFrameNumbers('beeff', {
+                start: 0,
+                end: 20
+            }),
+            frameRate: 10,
+            repeat: 0
+        });
+        this.imageObject.anims.play('beeff', true);
+        this.textObj = this.add.text(700, 800, "Click to start Game", { font: "30px Impact",
+        color: "#f00060", align: "left"})
+        this.tweens.add({
+            targets: this.textObj,
+            alpha:{start: 0, to: 1},
+            duration:3000,
+            delay:1100,
+        });
+        this.input.on('pointerdown', () => this.scene.start('demo1'));
+    }
+    
+
+
+
+
+}
+    
+  
 
 class Outro extends Phaser.Scene {
     constructor() {
@@ -118,6 +186,7 @@ class Outro extends Phaser.Scene {
 }
 
 
+
 const game = new Phaser.Game({
     scale: {
         mode: Phaser.Scale.FIT,
@@ -125,7 +194,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, Demo1, Demo2, Outro],
+    scene: [Demo1, Intro, Int1, Demo2, Outro],
     title: "Adventure Game",
 });
 
