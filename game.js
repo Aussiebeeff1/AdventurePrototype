@@ -7,6 +7,8 @@ class Demo1 extends AdventureScene {
         this.load.image('room1', 'room1.png');
         this.load.image('room2', 'room2.png');
         this.load.image('knob', 'knob.png');
+        this.load.image('remote' , 'remote.png')
+        
     }
     onEnter() {
         this.imageObject = this.add.image(
@@ -19,12 +21,15 @@ class Demo1 extends AdventureScene {
     // bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
         
         this.imageObject.setScale(1.199)
-        let clip = this.add.text(this.w * 0.3, this.w * 0.3, "📎  paperclip")
-            .setFontSize(this.s * 2)
+        
+        let clip = this.add.image(1130, 630, 'remote' )
+            clip.setOrigin(0.5,0.5)
+            clip.setScale(0.2,0.2)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("This leads to your"))
+            .on('pointerover', () => this.showMessage("Turn on TV?"))
             .on('pointerdown', () => {
-                this.showMessage("No touching!");
+                
+                this.showMessage("No touching! You have a date!");
                 this.tweens.add({
                     targets: clip,
                     x: '+=' + this.s,
@@ -32,7 +37,9 @@ class Demo1 extends AdventureScene {
                     yoyo: true,
                     ease: 'Sine.inOut',
                     duration: 100
+                    
                 });
+                
             });
 
            
@@ -57,24 +64,7 @@ class Demo1 extends AdventureScene {
                 });
             })
 
-        let door = this.add.text(this.w * 0.1, this.w * 0.15, "🚪 locked door")
-            .setFontSize(this.s * 2)
-            .setInteractive()
-            .on('pointerover', () => {
-                if (this.hasItem("key")) {
-                    this.showMessage("You've got the key for this door.");
-                } else {
-                    this.showMessage("It's locked. Can you find a key?");
-                }
-            })
-            .on('pointerdown', () => {
-                if (this.hasItem("key")) {
-                    this.loseItem("key");
-                    this.showMessage("*squeak*");
-                    door.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
-                }
-            })
+     
 
                 
         let Knob = this.add.image(
@@ -85,9 +75,18 @@ class Demo1 extends AdventureScene {
             Knob.setOrigin(0.5,0.5)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage("Advance deeper...");
+                this.showMessage("Go to your room.");
             })
             .on('pointerdown', () => this.gotoScene('demo2'));
+            
+            this.add.tween({
+                targets: Knob,
+                scale: 1.18,
+                duration: 800,
+                yoyo: true,
+                repeat: -1
+            });
+
 
             let Knob1 = this.add.image(
                 762,
@@ -97,9 +96,16 @@ class Demo1 extends AdventureScene {
                 Knob1.setOrigin(0.5,0.5)
                 .setInteractive()
                 .on('pointerover', () => {
-                    this.showMessage("Advance deeper...");
+                    this.showMessage("Go to your room.");
                 })
                 .on('pointerdown', () => this.gotoScene('demo2'));
+                this.add.tween({
+                    targets: Knob1,
+                    scale: 1.18,
+                    duration: 800,
+                    yoyo: true,
+                    repeat: -1
+                });
 
                 let Knob3 = this.add.image(
                     107,
@@ -109,20 +115,68 @@ class Demo1 extends AdventureScene {
                     Knob3.setOrigin(0.5,0.5)
                     .setInteractive()
                     .on('pointerover', () => {
-                        this.showMessage("Leave the house?");
+                        if (this.hasItem("key")) {
+                            this.showMessage("You've got the key for this door.");
+                        } else {
+                            this.showMessage("It's locked. Can you find a key?");
+                        }
+
+                        
                     })
-                    .on('pointerdown', () => this.gotoScene('demo2'));
+                    .on('pointerdown', () => {
+                        if (this.hasItem("key")) {
+                            this.loseItem("key");
+                            this.showMessage("*squeak*");
+                            
+                            this.gotoScene('lossoutro');
+                            
+                        }
+                        
+                    })
+
                 
                     this.add.tween({
                         targets: Knob3,
-                        scale: 1.5,
-                       
+                        scale: 1.7,
+                        duration: 800,
+                        yoyo: true,
+                        repeat: -1
                     });
+                
+                 
+                       
+                    
 
-            
+                    
     }
     
 }
+
+class Title extends AdventureScene {
+    constructor() {
+        super("title", "title");
+    }
+    preload() {
+        this.load.path = "./assets/";
+        this.load.image('title', 'title.png');
+       
+    }
+    onEnter() {
+        this.imageObject = this.add.image(
+            5,//x
+            -100,//y
+            'title',//imagename
+            
+        ).setOrigin(0);
+        
+        this.imageObject.setScale(1.2)
+        .setInteractive()
+        .on('pointerdown', () => this.gotoScene('demo1'));
+    }
+    
+}
+        
+
 
 class Demo2 extends AdventureScene {
     constructor() {
@@ -132,6 +186,7 @@ class Demo2 extends AdventureScene {
         this.load.path = "./assets/";
         this.load.image('room2', 'room2.png');
         this.load.image('knob', 'knob.png');
+        this.load.image('rose', 'rose.png')
 
     }
     onEnter() {
@@ -143,6 +198,41 @@ class Demo2 extends AdventureScene {
         ).setOrigin(0);
         
         this.imageObject.setScale(1.199)
+        
+        
+        let Rose = this.add.image(
+            1150,
+            230,
+            'rose',
+            );            
+            Rose.setOrigin(0.5,0.5)
+            Rose.setScale(0.2,0.2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Rose for your date?");
+            })
+        
+            .on('pointerdown', () => {
+                this.showMessage("You took the rose for your date.");
+                this.gainItem('Rose');
+                this.tweens.add({
+                    targets: Rose,
+                    y: `-=${2 * this.s}`,
+                    alpha: { from: 1, to: 0 },
+                    duration: 500,
+                    onComplete: () => Rose.destroy()
+                });
+
+            });
+            this.add.tween({
+                targets: Rose,
+                scale: 0.25,
+                duration: 800,
+                yoyo: true,
+                repeat: -1
+            });
+
+
 
         let Knob1 = this.add.image(
             762,
@@ -180,10 +270,41 @@ class Demo2 extends AdventureScene {
                     })
                     .on('pointerdown', () => this.gotoScene('Shoe'));
             
-
+                    let finish = this.add.text(this.w * 0.57, this.w * 0.51, '(Leave Room)')
+                    .setFontSize(this.s * 2)
+                    .setInteractive()
+                    .on('pointerover', () => {
+                        this.showMessage('Exist your room');
+                 
+                    })
+                    .on('pointerdown', () => this.gotoScene('demo1'));
+            
+                    this.add.tween({
+                        targets: Knob3,
+                        scale: 1.2,
+                        duration: 800,
+                        yoyo: true,
+                        repeat: -1
+                    });
+                    this.add.tween({
+                        targets: Knob2,
+                        scale: 1.2,
+                        duration: 800,
+                        yoyo: true,
+                        repeat: -1
+                    });
+                    this.add.tween({
+                        targets: Knob1,
+                        scale: 1.2,
+                        duration: 800,
+                        yoyo: true,
+                        repeat: -1
+                    });
+            }
+            
         
         }
-}
+
 class Shoe extends AdventureScene {
     constructor() {
         super("Shoe", "Choose your shoe.");
@@ -203,6 +324,7 @@ class Shoe extends AdventureScene {
         ).setOrigin(0);
         
         this.imageObject.setScale(1.199)
+        
 
         let Nike = this.add.image(
             700,
@@ -239,43 +361,64 @@ class Shoe extends AdventureScene {
             .setInteractive()
             
             .on('pointerover', () => {
-                this.showMessage("Converse High Tops");
-                if (this.hasItem("nike")) {
-                    this.showMessage("You've already chosen the Nike");
                 
+                if (this.hasItem("Nike")) {
+                    this.showMessage("You've got the Nike greys.");
                 }
-              
+                else{
+                    this.showMessage("Converse High Tops");
+                }
             })
 
             .on('pointerdown', () => {
                 this.showMessage("You put on the Converse high tops.");
                 this.gainItem('Converse High Tops');
-                if (this.hasItem("key")) {
-                    this.tweens.add({
-                        targets: clip,
-                        x: '+=' + this.s,
-                        repeat: 2,
-                        yoyo: true,
-                        ease: 'Sine.inOut',
-                        duration: 100
-                    });
+                
                 this.tweens.add({
                     targets: Convers,
                     y: `-=${2 * this.s}`,
                     alpha: { from: 1, to: 0 },
                     duration: 500,
                     onComplete: () => Convers.destroy()
+                    
                 });
 
-            }
-        }
+            })
+            let finish = this.add.text(this.w * 0.57, this.w * 0.51, '(Leave Closet)')
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage('Exist Shoe Closet');
+         
+            })
+            .on('pointerdown', () => this.gotoScene('demo2'));
+            
+            this.add.tween({
+                targets: Nike,
+                scale: 1.1,
+                duration: 800,
+                yoyo: true,
+                repeat: -1
+            });
+
+            this.add.tween({
+                targets: Convers,
+                scale: 0.8,
+                duration: 800,
+                yoyo: true,
+                repeat: -1
+            });
+    }
+    
+    
+    
+}
         
         
             
-    }
-}
+    
 
-
+   
 class Closet extends AdventureScene {
     constructor() {
         super("Closet", "Choose an Outfit");
@@ -343,23 +486,6 @@ class Closet extends AdventureScene {
 
                 })
 
-                let key = this.add.text(this.w * 0.5, this.w * 0.1, "🔑 key")
-                .setFontSize(this.s * 2)
-                .setInteractive()
-                .on('pointerover', () => {
-                    this.showMessage("It's a nice key.")
-                })
-                .on('pointerdown', () => {
-                    this.showMessage("You pick up the key.");
-                    this.gainItem('key');
-                    this.tweens.add({
-                        targets: key,
-                        y: `-=${2 * this.s}`,
-                        alpha: { from: 1, to: 0 },
-                        duration: 500,
-                        onComplete: () => key.destroy()
-                    });
-                })
      
         let finish = this.add.text(this.w * 0.57, this.w * 0.51, '(Leave Closet)')
             .setFontSize(this.s * 2)
@@ -369,6 +495,22 @@ class Closet extends AdventureScene {
          
             })
             .on('pointerdown', () => this.gotoScene('demo2'));
+    
+            this.add.tween({
+                targets: Shirt,
+                scale: 1.07,
+                duration: 800,
+                yoyo: true,
+                repeat: -1
+            });
+
+            this.add.tween({
+                targets: Jean,
+                scale: 1.07,
+                duration: 800,
+                yoyo: true,
+                repeat: -1
+            });
     }
         
         }
@@ -461,7 +603,7 @@ create() {
             duration:3000,
             delay:1100,
         });
-        this.input.on('pointerdown', () => this.scene.start('demo1'));
+        this.input.on('pointerdown', () => this.scene.start('title'));
     }
     
 
@@ -469,7 +611,7 @@ create() {
 
 
 }
-    
+
   
 
 class Outro extends Phaser.Scene {
@@ -483,7 +625,28 @@ class Outro extends Phaser.Scene {
     }
 }
 
+class LossOutro extends Phaser.Scene {
+    constructor() {
+        super('lossoutro');
+    }
+    preload() {
+        
+    }
+    create() {
+        
 
+        this.add.text(0, 0, "You go on your date and you she loses intrest. Find the missing items! ", {
+            stroke: '#000000',
+            strokeThickness: 3,
+            fill: '#00ff00'
+        }).setFontSize(45);
+        this.add.text(750, 550, "Click anywhere to restart.", {
+            stroke: '#000000',
+            strokeThickness: 5,
+        }).setFontSize(20);
+        this.input.on('pointerdown', () => this.scene.start('intro'));
+    }
+}
 
 const game = new Phaser.Game({
     scale: {
@@ -492,7 +655,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Shoe, Intro, Int1,Demo1,Demo2,Closet, Outro],
+    scene: [ Intro, Int1, Title, Demo1,  Demo2,Closet, Shoe,LossOutro, ],
     title: "Adventure Game",
 });
 
