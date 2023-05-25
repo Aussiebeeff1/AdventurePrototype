@@ -137,6 +137,14 @@ class AdventureScene extends Phaser.Scene {
         });
     }
 
+    cleanup(itemArr) {
+        for(let i = 0; i < itemArr.length; i += 2) {
+            if(this.hasItem(itemArr[i])) {
+                itemArr[i+1].destroy();
+            }
+        }
+    }
+    
     gotoScene(key) {
         this.cameras.main.fade(this.transitionDuration, 0, 0, 0);
         this.time.delayedCall(this.transitionDuration, () => {
@@ -148,3 +156,6 @@ class AdventureScene extends Phaser.Scene {
         console.warn('This AdventureScene did not implement onEnter():', this.constructor.name);
     }
 }
+
+
+

@@ -1,3 +1,7 @@
+//imgaes are made from pixleart
+//audio is from previous 
+
+
 class Demo1 extends AdventureScene {
     constructor() {
         super("demo1", "First Room");
@@ -64,7 +68,7 @@ class Demo1 extends AdventureScene {
                 });
             })
 
-     
+            this.cleanup(['key', key]);
 
                 
         let Knob = this.add.image(
@@ -124,13 +128,19 @@ class Demo1 extends AdventureScene {
                         
                     })
                     .on('pointerdown', () => {
-                        if (this.hasItem("key")) {
+                        if (this.hasItem("key" , "rose")) {
                             this.loseItem("key");
                             this.showMessage("*squeak*");
                             
-                            this.gotoScene('lossoutro');
-                            
+                            this.gotoScene('dub');
                         }
+                            else
+                            
+                            {
+                                this.gotoScene('lossoutro')
+                            }
+                            
+                        
                         
                     })
 
@@ -154,7 +164,7 @@ class Demo1 extends AdventureScene {
 
 class Title extends AdventureScene {
     constructor() {
-        super("title", "title");
+        super("title", "A game where you succeded on going on a date with a girl?");
     }
     preload() {
         this.load.path = "./assets/";
@@ -213,6 +223,8 @@ class Demo2 extends AdventureScene {
             })
         
             .on('pointerdown', () => {
+                
+
                 this.showMessage("You took the rose for your date.");
                 this.gainItem('Rose');
                 this.tweens.add({
@@ -221,9 +233,13 @@ class Demo2 extends AdventureScene {
                     alpha: { from: 1, to: 0 },
                     duration: 500,
                     onComplete: () => Rose.destroy()
+                    
                 });
-
+                
             });
+
+            this.cleanup(['Rose', Rose]);
+            
             this.add.tween({
                 targets: Rose,
                 scale: 0.25,
@@ -232,7 +248,9 @@ class Demo2 extends AdventureScene {
                 repeat: -1
             });
 
+            
 
+        
 
         let Knob1 = this.add.image(
             762,
@@ -347,8 +365,9 @@ class Shoe extends AdventureScene {
                     onComplete: () => Nike.destroy()
                 });
 
-            })
+            });
         
+        this.cleanup(['Nike Greys', Nike]);
 
         let Convers = this.add.image(
             700,
@@ -384,6 +403,7 @@ class Shoe extends AdventureScene {
                 });
 
             })
+            this.cleanup(['Converse High Tops', Convers]);
             let finish = this.add.text(this.w * 0.57, this.w * 0.51, '(Leave Closet)')
             .setFontSize(this.s * 2)
             .setInteractive()
@@ -462,6 +482,9 @@ class Closet extends AdventureScene {
                 });
 
             })
+
+            this.cleanup(['Shirt', Shirt]);
+
             let Jean = this.add.image(
                 500,
                 500,
@@ -486,6 +509,7 @@ class Closet extends AdventureScene {
 
                 })
 
+                this.cleanup(['Black Jean', Jean]);
      
         let finish = this.add.text(this.w * 0.57, this.w * 0.51, '(Leave Closet)')
             .setFontSize(this.s * 2)
@@ -610,6 +634,7 @@ create() {
 
 
 
+
 }
 
   
@@ -621,6 +646,29 @@ class Outro extends Phaser.Scene {
     create() {
         this.add.text(50, 50, "That's all!").setFontSize(50);
         this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
+        this.input.on('pointerdown', () => this.scene.start('intro'));
+    }
+}
+
+class Dub extends Phaser.Scene {
+    constructor() {
+        super('dub');
+    }
+    preload() {
+        
+    }
+    create() {
+        
+
+        this.add.text(0, 0, "Lets go you brought her a lovely flower and she loves it! ", {
+            stroke: '#000000',
+            strokeThickness: 3,
+            fill: '#00ff00'
+        }).setFontSize(45);
+        this.add.text(750, 550, "Click anywhere to restart.", {
+            stroke: '#000000',
+            strokeThickness: 5,
+        }).setFontSize(20);
         this.input.on('pointerdown', () => this.scene.start('intro'));
     }
 }
@@ -655,7 +703,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [ Intro, Int1, Title, Demo1,  Demo2,Closet, Shoe,LossOutro, ],
+    scene: [ Demo2, Intro, Int1, Title, Demo1,  Closet, Shoe, Dub, LossOutro],
     title: "Adventure Game",
 });
 
