@@ -703,7 +703,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [ Demo2, Intro, Int1, Title, Demo1,  Closet, Shoe, Dub, LossOutro],
+    scene: [ Intro, Int1, Title, Demo1, Demo2, Closet, Shoe, Dub, LossOutro],
     title: "Adventure Game",
 });
 
